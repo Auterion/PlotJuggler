@@ -258,7 +258,40 @@ PlotDataMapRef DataLoadULog::readDataFromFile(const QString &file_name, bool)
         }
     }
 
+//----------------------------------------
+    auto gps_check_fail_flags = plot_data.numeric.find("estimator_status/gps_check_fail_flags");
 
+    QVector<QString> gps_check_fail_flags_fields;
+
+    gps_check_fail_flags_fields.append(QString("gps_fix"));
+    gps_check_fail_flags_fields.append(QString("min_sat_count"));
+    gps_check_fail_flags_fields.append(QString("min_gdop"));
+    gps_check_fail_flags_fields.append(QString("max_horiz_err"));
+    gps_check_fail_flags_fields.append(QString("max_vert_err"));
+    gps_check_fail_flags_fields.append(QString("max_spd_err"));
+    gps_check_fail_flags_fields.append(QString("max_horiz_drift"));
+    gps_check_fail_flags_fields.append(QString("max_vert_drift"));
+    gps_check_fail_flags_fields.append(QString("max_horiz_spd_err"));
+    gps_check_fail_flags_fields.append(QString("max_vert_spd_err"));
+
+    for (int i = 0; i < gps_check_fail_flags_fields.size(); i++) {
+        iterator_map[gps_check_fail_flags_fields.at(i).toStdString()] = plot_data.addNumeric(std::string("gps_check_fail_flags/") +gps_check_fail_flags_fields.at(i).toStdString());
+    }
+
+    for (int i = 0; i < gps_check_fail_flags->second.size(); i++) {
+        for (int j = 0; j < gps_check_fail_flags_fields.size(); j++) {
+
+            if ((uint32_t)gps_check_fail_flags->second.at(i).y & (1 << j)) {
+                val = 1;
+            } else {
+                val = 0;
+            }
+
+            PlotData::Point point( gps_check_fail_flags->second.at(i).x, val );
+            iterator_map[gps_check_fail_flags_fields.at(j).toStdString()]->second.pushBack(point);
+        }
+    }
+//
     auto innovation_check_flags = plot_data.numeric.find("estimator_status/innovation_check_flags");
 
     QVector<QString> innovation_fields;
