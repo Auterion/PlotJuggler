@@ -140,10 +140,11 @@ PlotDataMapRef DataLoadULog::readDataFromFile(const QString &file_name, bool)
     control_mode_fields.append(QString("in_air"));
     control_mode_fields.append(QString("wind"));
     control_mode_fields.append(QString("baro_hgt"));
-    control_mode_fields.append(QString("gps_hgt"));
     control_mode_fields.append(QString("rng_hgt"));
+    control_mode_fields.append(QString("gps_hgt"));
     control_mode_fields.append(QString("ev_pos"));
     control_mode_fields.append(QString("ev_yaw"));
+    control_mode_fields.append(QString("ev_hgt"));
     control_mode_fields.append(QString("beta"));
     control_mode_fields.append(QString("mag_field"));
     control_mode_fields.append(QString("fixed_wing"));
