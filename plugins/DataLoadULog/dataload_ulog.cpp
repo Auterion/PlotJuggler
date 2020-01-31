@@ -265,7 +265,7 @@ PlotDataMapRef DataLoadULog::readDataFromFile(const QString &file_name, bool)
 
     gps_check_fail_flags_fields.append(QString("gps_fix"));
     gps_check_fail_flags_fields.append(QString("min_sat_count"));
-    gps_check_fail_flags_fields.append(QString("min_gdop"));
+    gps_check_fail_flags_fields.append(QString("min_pdop"));
     gps_check_fail_flags_fields.append(QString("max_horiz_err"));
     gps_check_fail_flags_fields.append(QString("max_vert_err"));
     gps_check_fail_flags_fields.append(QString("max_spd_err"));
