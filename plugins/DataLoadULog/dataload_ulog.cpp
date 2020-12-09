@@ -294,15 +294,40 @@ PlotDataMapRef DataLoadULog::readDataFromFile(const QString &file_name, bool)
 //
     auto innovation_check_flags = plot_data.numeric.find("estimator_status/innovation_check_flags");
 
-    QVector<QString> innovation_fields;
+    QVector<QString> innovation_check_flags_fields;
 
-    innovation_fields.append(QString("vel"));
-    innovation_fields.append(QString("hor_pos"));
-    innovation_fields.append(QString("ver_pos"));
-    innovation_fields.append(QString("vel"));
-    innovation_fields.append(QString("vel"));
-    innovation_fields.append(QString("vel"));
+    innovation_check_flags_fields.append(QString("vel"));
+    innovation_check_flags_fields.append(QString("hor_pos"));
+    innovation_check_flags_fields.append(QString("ver_pos"));
+    innovation_check_flags_fields.append(QString("mag_x"));
+    innovation_check_flags_fields.append(QString("mag_y"));
+    innovation_check_flags_fields.append(QString("mag_z"));
+    innovation_check_flags_fields.append(QString("yaw"));
+    innovation_check_flags_fields.append(QString("airspeed"));
+    innovation_check_flags_fields.append(QString("sideslip"));
+    innovation_check_flags_fields.append(QString("hagl"));
+    innovation_check_flags_fields.append(QString("flow_x"));
+    innovation_check_flags_fields.append(QString("flow_y"));
 
+    for (int i = 0; i < innovation_check_flags_fields.size(); i++) {
+        iterator_map[innovation_check_flags_fields.at(i).toStdString()] = plot_data.addNumeric(std::string("innovation_check_flags/") +innovation_check_flags_fields.at(i).toStdString());
+    }
+
+    for (int i = 0; i < innovation_check_flags->second.size(); i++) {
+        for (int j = 0; j < innovation_check_flags_fields.size(); j++) {
+
+            if ((uint32_t)innovation_check_flags->second.at(i).y & (1 << j)) {
+                val = 1;
+            } else {
+                val = 0;
+            }
+
+            PlotData::Point point( innovation_check_flags->second.at(i).x, val );
+            iterator_map[innovation_check_flags_fields.at(j).toStdString()]->second.pushBack(point);
+        }
+    }
+
+//
 
     ULogParametersDialog* dialog = new ULogParametersDialog( parser, _main_win );
     dialog->setWindowTitle( QString("ULog file %1").arg(file_name) );
